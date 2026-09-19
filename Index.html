@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Una sorpresa para ti ✨</title>
+  <!-- Canvas-confetti para la animación de fiesta/corazones -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    :root {
+      --bg: #0b0c16;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --accent: #ff3366;
+      --accent-glow: rgba(255, 51, 102, 0.35);
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 20%, #201435 0%, var(--bg) 85%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.2rem;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px var(--accent-glow);
+      text-align: center;
+      position: relative;
+    }
+
+    h1, h2 {
+      margin-bottom: 0.8rem;
+    }
+
+    p {
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.8rem 1.8rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px var(--accent-glow);
+      transition: transform 0.2s;
+      margin-top: 1.2rem;
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    /* FASES */
+    .phase { display: none; }
+    .phase.active { display: block; animation: fadeIn 0.6s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* FASE 1: Botones traviesos */
+    .buttons-container {
+      position: relative;
+      margin-top: 2rem;
+      min-height: 120px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .btn-no {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      position: relative;
+    }
+
+    /* FASE 2: Cupones de amor */
+    .coupon-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 2px dashed var(--accent);
+      border-radius: 16px;
+      padding: 1.5rem 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .coupon-title {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .coupon-desc {
+      font-size: 1.05rem;
+      color: #fff;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* FASE 3: Carta y música */
+    .typing-text {
+      text-align: left;
+      font-size: 1rem;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      color: #e5e7eb;
+      margin: 1.5rem 0;
+    }
+
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      margin-top: 1.5rem;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- FASE 1: Pregunta trampa divertida -->
+    <div class="phase active" id="phase1">
+      <div style="font-size: 3rem; margin-bottom: 0.8rem;">🧐</div>
+      <h2>Pregunta muy seria...</h2>
+      <p>Antes de ver la sorpresa, tienes que responder con toda sinceridad:</p>
+      <h3 style="margin-top: 1.2rem; color: var(--accent);">¿Me quieres mucho?</h3>
+      
+      <div class="buttons-container">
+        <button class="btn" id="btnYes">¡Obvio que sí! ❤️</button>
+        <button class="btn btn-no" id="btnNo">No tanto 🙄</button>
+      </div>
+    </div>
+
+    <!-- FASE 2: Minijuego de cupones -->
+    <div class="phase" id="phase2">
+      <div style="font-size: 3rem; margin-bottom: 0.8rem;">🎟️</div>
+      <h2>¡Respuesta correcta!</h2>
+      <p>Te ganaste la ruleta de cupones válidos 100% reales conmigo. Toca para sacar uno:</p>
+      
+      <div class="coupon-card">
+        <div class="coupon-title">Cupón Oficial</div>
+        <div class="coupon-desc" id="couponText">Toca el botón para reclamar tu primer regalo 😗</div>
+      </div>
+
+      <button class="btn" id="btnRandomCoupon">🎲 Sacar cupón al azar</button>
+      <br>
+      <button class="btn" style="background: transparent; border: 1px solid var(--card-border); margin-top: 1rem; font-size: 0.85rem;" id="btnGoToLetter">
+        Continuar a la carta final 💌
+      </button>
+    </div>
+
+    <!-- FASE 3: Carta final con música -->
+    <div class="phase" id="phase3">
+      <h2 style="color: var(--accent);">Para la niña más especial ❤️</h2>
+      <div class="typing-text" id="typewriter"></div>
+
+      <!-- Video de YouTube (puedes cambiar el ID por la canción que quieras) -->
+      <div class="video-wrapper">
+        <iframe 
+          id="ytVideo"
+          src="https://youtu.be/yEZjtgpqWhg?si=b73kC-X_jd4HlJz5" 
+          title="Canción especial" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // --- LÓGICA DEL BOTÓN QUE SE ESCAPA (FASE 1) ---
+    const btnNo = document.getElementById('btnNo');
+    const btnYes = document.getElementById('btnYes');
+    const phase1 = document.getElementById('phase1');
+    const phase2 = document.getElementById('phase2');
+    const phase3 = document.getElementById('phase3');
+
+    // Mueve el botón 'No' al intentar tocarlo en el celular
+    function moveButton() {
+      const x = Math.random() * 160 - 80;
+      const y = Math.random() * 140 - 70;
+      btnNo.style.transform = `translate(${x}px, ${y}px)`;
+    }
+    btnNo.addEventListener('touchstart', (e) => { e.preventDefault(); moveButton(); });
+    btnNo.addEventListener('mouseover', moveButton);
+
+    btnYes.addEventListener('click', () => {
+      // Confeti de celebración
+      confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+      phase1.classList.remove('active');
+      phase2.classList.add('active');
+    });
+
+    // --- LÓGICA DE CUPONES DE AMOR (FASE 2) ---
+    const cupones = [
+      "🫣 Vale por una salida a comer lo que tú elijas",
+      "🫂 Vale por un abrazo gigante e infinito",
+      "🎬 Vale por elegir la película (sin quejas)",
+      "🍦 Vale por un helado o antojito cuando quieras",
+      "👑 Vale por tener la razón absoluta en una discusión",
+      "✨ Vale por un masaje en la espalda antiestrés",
+      "❤️ Vale por besos ilimitados durante todo el día"
+    ];
+
+    const couponText = document.getElementById('couponText');
+    const btnRandomCoupon = document.getElementById('btnRandomCoupon');
+
+    btnRandomCoupon.addEventListener('click', () => {
+      const random = cupones[Math.floor(Math.random() * cupones.length)];
+      couponText.textContent = random;
+      confetti({ particleCount: 30, spread: 50, origin: { y: 0.5 } });
+    });
+
+    // --- LÓGICA DE LA CARTA (FASE 3) ---
+    const btnGoToLetter = document.getElementById('btnGoToLetter');
+    const typewriterEl = document.getElementById('typewriter');
+    const ytVideo = document.getElementById('ytVideo');
+
+    const mensajeCarta = 
+`Más allá de los juegos, solo quería sacarte una sonrisa hoy. 
+
+Eres una persona maravillosa que alegra mis días de una manera única. Me encanta compartir tiempo contigo, reírnos de cualquier tontería y seguir sumando momentos bonitos juntos.
+
+Gracias por ser tú. Te asmooo muchísimo ❤️`;
+
+    btnGoToLetter.addEventListener('click', () => {
+      phase2.classList.remove('active');
+      phase3.classList.add('active');
+
+      // Lanza más confeti
+      confetti({ particleCount: 100, spread: 90, origin: { y: 0.4 } });
+
+      // Carga la canción (aquí está "Ya Borracho" con ID 7SsmyjVF1Oo, puedes cambiarlo si quieres otra)
+      ytVideo.src = "https://youtu.be/TX-1dI8t6WM?si=mJdzFOSE8_CaA5zE";
+
+      // Inicia texto tipo máquina de escribir
+      let i = 0;
+      typewriterEl.textContent = '';
+      const timer = setInterval(() => {
+        if (i < mensajeCarta.length) {
+          typewriterEl.textContent += mensajeCarta.charAt(i);
+          i++;
+        } else {
+          clearInterval(timer);
+        }
+      }, 35);
+    });
+  </script>
+</body>
+</html>
