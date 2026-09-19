@@ -4,12 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Una sorpresa para ti ✨</title>
-  <!-- Canvas-confetti para la animación de fiesta/corazones -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     :root {
       --bg: #0b0c16;
-      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-bg: rgba(255, 255, 255, 0.06);
       --card-border: rgba(255, 255, 255, 0.12);
       --accent: #ff3366;
       --accent-glow: rgba(255, 51, 102, 0.35);
@@ -71,6 +70,8 @@
       box-shadow: 0 4px 15px var(--accent-glow);
       transition: transform 0.2s;
       margin-top: 1.2rem;
+      display: inline-block;
+      text-decoration: none;
     }
 
     .btn:active {
@@ -79,14 +80,14 @@
 
     /* FASES */
     .phase { display: none; }
-    .phase.active { display: block; animation: fadeIn 0.6s ease; }
+    .phase.active { display: block; animation: fadeIn 0.6s ease forwards; }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* FASE 1: Botones traviesos */
+    /* FASE 1: Botones */
     .buttons-container {
       position: relative;
       margin-top: 2rem;
@@ -104,7 +105,7 @@
       position: relative;
     }
 
-    /* FASE 2: Cupones de amor */
+    /* FASE 2: Cupones */
     .coupon-card {
       background: rgba(255, 255, 255, 0.04);
       border: 2px dashed var(--accent);
@@ -129,34 +130,26 @@
       justify-content: center;
     }
 
-    /* FASE 3: Carta y música */
-    .typing-text {
+    /* FASE 3: Carta */
+    .letter-body {
       text-align: left;
-      font-size: 1rem;
-      line-height: 1.7;
-      white-space: pre-wrap;
+      font-size: 1.05rem;
+      line-height: 1.8;
       color: #e5e7eb;
-      margin: 1.5rem 0;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 1.4rem;
+      margin: 1.2rem 0;
     }
 
-    .video-wrapper {
-      position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid var(--card-border);
+    .music-box {
       margin-top: 1.5rem;
-      background: #000;
-    }
-
-    .video-wrapper iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
+      padding: 1.2rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      text-align: center;
     }
   </style>
 </head>
@@ -198,21 +191,28 @@
     <!-- FASE 3: Carta final con música -->
     <div class="phase" id="phase3">
       <h2 style="color: var(--accent);">Para la niña más especial ❤️</h2>
-      <div class="typing-text" id="typewriter"></div>
-
-           <!-- Tarjeta musical estilo reproductor -->
-      <div style="margin-top: 1.5rem; padding: 1.2rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 18px; text-align: center;">
-        <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🎵</div>
-        <div style="font-weight: 700; color: #fff; font-size: 1.05rem;">Emmanuel Cortes - Amor</div>
-        <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.2rem;">Nuestra canción para este momento ✨</div>
-        <a href="https://youtu.be/TX-1dI8t6WM" target="_blank" style="display: inline-block; margin-top: 1rem; background: #ff3366; color: #fff; text-decoration: none; padding: 0.7rem 1.4rem; border-radius: 999px; font-weight: 600; font-size: 0.9rem; box-shadow: 0 4px 15px rgba(255,51,102,0.4);">
-          ▶ Escuchar canción aquí
-        </a>
+      
+      <div class="letter-body">
+        <p style="color: #fff; margin-bottom: 0.8rem;">Más allá de los juegos, solo quería sacarte una sonrisa hoy.</p>
+        <p style="color: #fff; margin-bottom: 0.8rem;">Eres una persona maravillosa que alegra mis días de una manera única. Me encanta compartir tiempo contigo, reírnos de cualquier tontería y seguir sumando momentos bonitos juntos.</p>
+        <p style="color: var(--accent); font-weight: 600; margin-top: 1rem;">Gracias por ser tú. Te asmooo muchísimo ❤️</p>
       </div>
 
+      <!-- Tarjeta musical estilo reproductor -->
+      <div class="music-box">
+        <div style="font-size: 2rem; margin-bottom: 0.4rem;">🎵</div>
+        <div style="font-weight: 700; color: #fff; font-size: 1.05rem;">Emmanuel Cortes - Amor</div>
+        <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.2rem;">Nuestra canción para este momento ✨</div>
+        <a href="https://youtu.be/TX-1dI8t6WM" target="_blank" class="btn" style="margin-top: 1rem; padding: 0.7rem 1.5rem; font-size: 0.9rem;">
+          ▶ Escuchar canción en YouTube
+        </a>
+      </div>
+    </div>
+
+  </div>
 
   <script>
-    // --- LÓGICA DEL BOTÓN QUE SE ESCAPA (FASE 1) ---
+    // --- FASE 1: Botón travieso ---
     const btnNo = document.getElementById('btnNo');
     const btnYes = document.getElementById('btnYes');
     const phase1 = document.getElementById('phase1');
@@ -233,7 +233,7 @@
       phase2.classList.add('active');
     });
 
-    // --- LÓGICA DE CUPONES DE AMOR (FASE 2) ---
+    // --- FASE 2: Cupones ---
     const cupones = [
       "🫣 Vale por una salida a comer lo que tú elijas",
       "🫂 Vale por un abrazo gigante e infinito",
@@ -253,37 +253,13 @@
       confetti({ particleCount: 30, spread: 50, origin: { y: 0.5 } });
     });
 
-    // --- LÓGICA DE LA CARTA (FASE 3) ---
+    // --- FASE 3: Ir a la carta ---
     const btnGoToLetter = document.getElementById('btnGoToLetter');
-    const typewriterEl = document.getElementById('typewriter');
-    const ytVideo = document.getElementById('ytVideo');
-
-    const mensajeCarta = 
-`Más allá de los juegos, solo quería sacarte una sonrisa hoy. 
-
-Eres una persona maravillosa que alegra mis días de una manera única. Me encanta compartir tiempo contigo, reírnos de cualquier tontería y seguir sumando momentos bonitos juntos.
-
-Gracias por ser tú. Te asmooo muchísimo ❤️`;
 
     btnGoToLetter.addEventListener('click', () => {
       phase2.classList.remove('active');
       phase3.classList.add('active');
-
-      confetti({ particleCount: 100, spread: 90, origin: { y: 0.4 } });
-
-      // Enlace en formato embed compatible (código del video: TX-1dI8t6WM)
-      ytVideo.src = "https://www.youtube-nocookie.com/embed/TX-1dI8t6WM?autoplay=1&playsinline=1&rel=0";
-
-      let i = 0;
-      typewriterEl.textContent = '';
-      const timer = setInterval(() => {
-        if (i < mensajeCarta.length) {
-          typewriterEl.textContent += mensajeCarta.charAt(i);
-          i++;
-        } else {
-          clearInterval(timer);
-        }
-      }, 35);
+      confetti({ particleCount: 120, spread: 100, origin: { y: 0.5 } });
     });
   </script>
 </body>
