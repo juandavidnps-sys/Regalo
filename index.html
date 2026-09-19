@@ -147,6 +147,7 @@
       overflow: hidden;
       border: 1px solid var(--card-border);
       margin-top: 1.5rem;
+      background: #000;
     }
 
     .video-wrapper iframe {
@@ -199,13 +200,14 @@
       <h2 style="color: var(--accent);">Para la niña más especial ❤️</h2>
       <div class="typing-text" id="typewriter"></div>
 
-      <!-- Video de YouTube (puedes cambiar el ID por la canción que quieras) -->
+      <!-- Reproductor incrustado compatible con móviles -->
       <div class="video-wrapper">
         <iframe 
           id="ytVideo"
-          src="https://youtu.be/yEZjtgpqWhg?si=b73kC-X_jd4HlJz5" 
+          src="" 
           title="Canción especial" 
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
           allowfullscreen>
         </iframe>
       </div>
@@ -221,7 +223,6 @@
     const phase2 = document.getElementById('phase2');
     const phase3 = document.getElementById('phase3');
 
-    // Mueve el botón 'No' al intentar tocarlo en el celular
     function moveButton() {
       const x = Math.random() * 160 - 80;
       const y = Math.random() * 140 - 70;
@@ -231,7 +232,6 @@
     btnNo.addEventListener('mouseover', moveButton);
 
     btnYes.addEventListener('click', () => {
-      // Confeti de celebración
       confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
       phase1.classList.remove('active');
       phase2.classList.add('active');
@@ -273,13 +273,11 @@ Gracias por ser tú. Te asmooo muchísimo ❤️`;
       phase2.classList.remove('active');
       phase3.classList.add('active');
 
-      // Lanza más confeti
       confetti({ particleCount: 100, spread: 90, origin: { y: 0.4 } });
 
-      // Carga la canción (aquí está "Ya Borracho" con ID 7SsmyjVF1Oo, puedes cambiarlo si quieres otra)
-      ytVideo.src = "https://youtu.be/TX-1dI8t6WM?si=mJdzFOSE8_CaA5zE";
+      // Enlace en formato embed compatible (código del video: TX-1dI8t6WM)
+      ytVideo.src = "https://www.youtube-nocookie.com/embed/TX-1dI8t6WM?autoplay=1&playsinline=1&rel=0";
 
-      // Inicia texto tipo máquina de escribir
       let i = 0;
       typewriterEl.textContent = '';
       const timer = setInterval(() => {
